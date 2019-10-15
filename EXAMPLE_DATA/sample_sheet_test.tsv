@@ -1,0 +1,2 @@
+gender	kinship	dob	pob	affected	userid	resgroupid	fqdir	fq1	fq2	readfname	samplename	analysisname	reference	targetbed	seqtype	perchrom	convscores	infreq
+M	P	01/01/2018	Naples (NA)	1	1	1	/home/users/musacchia/samples//SampleA//	SampleA_R1_001.fastq.gz	SampleA_R2_001.fastq.gz	SampleA	SampleA	SampleA	hg19	target.bed	targeted	0	0	0

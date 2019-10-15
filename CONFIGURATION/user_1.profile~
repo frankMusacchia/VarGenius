@@ -1,0 +1,33 @@
+#Profile for Nigro Lab Targeted (nigro_pico_target)
+
+
+###########################
+#QUALITY CHECK AND TRIMMING
+qc_exec = YES
+trimming = YES
+qc_after_trim = YES
+
+#REFINEMENT
+base_recalibrator = NO
+print_reads = NO
+
+
+#DepthOfCoverage parameters 
+DOC_coverage_thresholds = 10,20,40,80,100
+
+#Disposition of the columns in the output
+output_new_cols = 
+
+
+#EMAIL TO SEND WHEN ANALYSIS IS COMPLETED
+email_author = VarGenius@tigem.it
+email_recipients = francescomusacchia@gmail.com
+email_subject = VarGenius analysis is completed
+
+
+#group stats (this task is ran per-group)
+grstats_nodes =
+grstats_select = 1
+grstats_ncpus = 1
+grstats_threads = 
+grstats_mem = 30GB

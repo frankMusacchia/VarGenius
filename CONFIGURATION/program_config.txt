@@ -1,0 +1,1443 @@
+###############################
+VarGeniusVer = 2.0
+VarGeniusLogo = genius.jpg
+dbVersion = 0.1
+
+#General public license data
+gnu_notice = VarGenius  Copyright (C) 2018  Francesco Musacchia This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'. This is free software, and you are welcome to redistribute it under certain conditions; type `show c' for details.
+gnu_licence_file = 
+
+#STEPS THAT ARE USEFUL FOR THE AUTHORS
+#and not viewable by users
+#Remove all the temporary files
+remove_temp = NO
+
+#QUALITY CHECK AND TRIMMING
+qc_after_trim = NO
+
+#ALIGNMENT
+#Only needed if base scores are not in Phred format
+convert_scores = NO
+#Merges read1 and 2 in a single file
+merge_pairs = YES
+#Sort after MarkDup or BWA
+sam_sort_idx = YES
+#Reorders the BAM file according with the reference fasta. It can be used
+#if the orders does not correspond with that of the fasts and causes problems in GATK
+#per default BuildBamIndex is used
+reorder_sam = NO
+#Splitncigar for RNA 
+split_ncigar_exec = NO
+
+#REFINEMENT (BestPractices GATK)
+#Old and no more used in GATK4
+realign_target_creator = NO
+indel_realigner = NO
+#after baseRecalibrator
+print_reads = YES
+
+#MERGE READFILES (This task is performed automatically)
+#Merge separated read files, if present
+mergesam = YES
+#(OPTIONAL) Runs MarkDuplicates on the merged read files
+mrdup_groups = NO
+#The following works only in couple with one of the prev two
+index_after_merge = YES
+
+#VARIANT CALLING
+catvar = YES
+fb_varcall = YES
+#CNV Calling
+cnv_out_build = YES
+cnv_out_annote = YES
+
+#GENOTYPING
+gatk_run_GenomicsDBImport = NO
+gatk_run_GenotypeGVCFs = YES
+
+#STATISTICS
+#merge bam files because samples are per-lane
+mergebam = YES
+
+#OUTPUT MANAGEMENT
+create_vcf_to_ann = YES
+annov_db_dl = YES
+#rearrange_output can be used with the profiles together with the variable
+#output_new_cols = 1,..,N which shows the new columns order
+rearrange_output = YES
+get_coverage_plots = YES
+update_overall_samples_plots = YES
+gene_annotation = YES
+#Joint analysis separation (Use YES if you want an output for each sample)
+separate_analysis_from_joint = NO
+supplementary_output = YES
+do_users_modifies = YES
+
+
+#Always block the db for VCF import
+always_block_db_vcfi = YES
+
+#Old steps of the pipeline that will be useful in the future
+#Only needed with Hg38
+map_alt_exec = NO
+#COVERAGE
+coverbed = NO
+#IMPORT VARIANTS AND ANNOTATIONS
+import_coverage_data = YES
+annot_missing = NO
+export_results = NO
+#Import missing annotations
+import_missing = YES
+#Separate single sample from the joint output
+sep_joint_analyses = NO
+
+
+###JOBS RESOURCES REQUESTS
+#Use the same parameters for qsub for all the programs
+#otherwise they are taken here
+qsub_param_for_all = NO
+#Qsub parameters that cannot be changed depending by the task:
+qsub_cmd = qsub
+#Qsub parameters that can be changed depending by the task:
+qsub_restartable = YES
+qsub_nodes = 
+qsub_select = 1
+qsub_threads = 
+qsub_depend = afterok
+
+
+
+#Alternative R path
+R2_path = /cineca/prod/applications/r/3.2.4/intel--pe-xe-2016--binary/bin/R
+#Alternative trimming programs
+trimgalore_path =
+cutadapt_path =
+#Alternative alignment programs
+star_path =
+javamem_TRM = Xmx4g
+#BWA-KIT
+bwakit_path =
+
+#DB sql script
+db_schema = db_schema.sql
+
+#genedb creation steps (not for normal user)
+hpo_parsing = YES
+genes2hpo_parsing = YES
+gdi_parsing = YES
+rvis_parsing = YES
+refseq2genes_parsing = YES
+omim_parsing = YES
+#old complete gene annotation
+create_gene_annot_table = NO
+
+
+#Database links
+hpo_table_link = http://purl.obolibrary.org/obo/hp.obo
+genes_2_hpo_table_link = http://compbio.charite.de/jenkins/job/hpo.annotations.monthly/lastStableBuild/artifact/annotation/ALL_SOURCES_ALL_FREQUENCIES_genes_to_phenotype.txt
+hpo_table = hpo.table
+gdi_table_link = http://lab.rockefeller.edu/casanova/assets/file/GDI_full_10282015.txt
+rvis_table_link = http://genic-intolerance.org/data/GenicIntolerance_v3_12Mar16.txt
+#Needs permission of access
+omim_table_link = https://data.omim.org/downloads/pfLWiIUkTs-C8GcgOSVnDA/genemap2.txt
+refseq2genes_link = ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz
+
+#Datasets Links
+genome_2bit_link = http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.2bit
+bitToFasta_link = http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/twoBitToFa
+twoBitToFa_prog = twoBitToFa
+#known indel and snps in the folder
+gatk_genome_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/ucsc.hg19.fasta.gz
+known_mills = Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.gz
+known_db_snp = dbsnp_138.hg19.vcf.gz
+known_hapmap = hapmap_3.3.hg19.sites.vcf.gz
+known_1000g = 1000G_phase1.indels.hg19.sites.vcf.gz
+known_omni = 1000G_omni2.5.hg19.sites.vcf.gz
+#Needed sites for Variant Quality Score Recalibration
+known_sites_mills = Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.gz
+known_sites_db_snp = dbsnp_138.hg19.vcf.gz
+known_sites_hapmap = hapmap_3.3.hg19.sites.vcf.gz
+known_sites_1000g = 1000G_phase1.snps.high_confidence.hg19.sites.vcf.gz
+known_sites_omni = 1000G_phase1.indels.hg19.sites.vcf.gz
+known_sites_1000gP3 =
+#GATK Bundle links
+known_mills_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.gz
+known_db_snp_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/dbsnp_138.hg19.vcf.gz
+known_hapmap_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/hapmap_3.3.hg19.sites.vcf.gz
+known_1000g_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/1000G_phase1.indels.hg19.sites.vcf.gz
+known_omni_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/1000G_omni2.5.hg19.sites.vcf.gz
+#GATK Bundle links for the VQSR
+known_sites_mills_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.gz
+known_sites_db_snp_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/dbsnp_138.hg19.vcf.gz
+known_sites_hapmap_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/hapmap_3.3.hg19.sites.vcf.gz
+known_sites_1000g_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf.gz
+known_sites_omni_link = ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/1000G_phase1.indels.hg19.sites.vcf.gz
+known_sites_1000gP3_link =
+
+#Default folders for databases
+#The same folders are in the user_config. If defined there, those here will not be used
+scratch_f_def = scratch
+#Storage area
+storage_f_def = storage
+#Reference Genome Folder
+ref_genome_f_def = genome
+#Target Bed Files
+target_reg_f_def = targets
+#GATK reference databases 
+gatk_ref_f_def = gatk
+#GATK genomics db folder name
+gatk_genomicsdb_name = genomicsdb
+#Annovar folder of databases 
+annovar_db_f_def = annovar_humandb_2018
+
+
+##Files for VarGenius
+perl_libs_paths_f = perl_libs_paths.txt
+install_dep_script = install_all.sh
+folders_file = folders.txt
+
+
+#Refeer
+#Gene annotation table
+gene_ann_table = gene_annotation.txt
+
+#Number of tasks that are using the BAM files per-read (only with multiple read files)
+#variant calling and stats (2017)
+tasks_using_bam = 2
+
+#Chromosome Regions to be used in GATK
+#suffixes of target chromosomes
+chr_suff = chr
+all_chr = all_chr
+#Number of chromosomes to use in GATK
+#Set from 1 to X (you must put bed files in folder chrom_reg_f (see above))
+#You must name them chrX.bed
+chromosomes_num = 22
+sex_chromosomes = X,Y
+#When target files must be separated per-chromosome, use this to decide 
+#which chromosome is to split further
+chroms_to_split = 1
+
+#Data to download RefSeq from UCSC 
+ucsc_host = genome-mysql.cse.ucsc.edu
+ucsc_user = genome
+ucsc_refseq2genes_query = select name,name2 from refGene
+refseq2genes_f = Refseq2Gene.txt
+refseq2genes_tax_col = 0
+refseq2genes_entrez_col = 1
+refseq2genes_refseq_col = 3
+refseq2genes_gensymb_col = 16
+human_tax_id = 9606
+
+#UCSC genes bed
+ucsc_genes_bed = ucsc_genes.bed
+#UCSC exons bed
+ucsc_exons_bed = UCSC_coding_exons.bed
+
+#Cleaning script (seconds)
+jobclean_time = 60
+jc_hash_f = jc.hash
+jc_dep_hash_f = jc_dep.hash
+jobclean_prog = job_clean.pl
+
+#program separators
+word_sep = ,
+
+#Useful Folders
+log_fold = log
+data_fold = data
+img_fold = img
+target_perchr_fold = target_perchr
+gene_db_fold = gene_db
+gene_panels_fold = gene_panels
+chrom_reg_f = perchrom
+references_fold = references
+
+#Script for the execution fo multiple jobs
+exec_job_script = exec_job.pl
+
+#Script for the execution of pipelines
+programs_runner_script = programs_runner.pl
+
+###JOBS RESOURCES REQUESTS
+#Qsub parameters changable depending by the task name
+#NB: WHEN CHANGING THE TASK NAME YOU MUST CHANGE ALSO HERE
+#For memory use always the measure unit (GB)
+#Quality Check (this task is ran per read file)
+qc_nodes =
+qc_select = 1
+qc_ncpus = 1
+qc_threads = 1
+qc_depend = afterok
+#Trimming (this task is ran per read file)
+trim_mode = gatk_BP
+trim_type = PE
+trim_nodes =
+trim_select = 1
+trim_ncpus = 1
+trim_threads = 1
+trim_threads_mem = 5G
+trim_depend = afterany
+#Alignment (this task is ran per read file)
+#mode: you can choose 'bwa' or 'bwa-kit'
+align_mode = gatk_BP
+align_type = PE
+align_nodes =
+align_select = 1
+align_ncpus = 5
+align_threads = 10
+align_threads_mem = 5G
+align_depend = afterok
+#Refinement (this task is ran per read file)
+refine_mode =
+refine_nodes =
+refine_select = 1
+refine_ncpus = 5
+refine_threads = 10
+refine_depend = afterok
+#Merge Samples (this task is ran per-sample)
+#80GB RAM is ok with Trios of Exomes 
+MS_nodes =
+MS_select = 1
+MS_ncpus = 1
+MS_threads =
+MS_depend = afterok
+#Variant calling (this task is ran per-sample)
+varcall_nodes =
+varcall_select = 1
+varcall_ncpus = 5
+varcall_threads = 10
+varcall_depend = afterok
+#Freebayes pipeline task
+VCFB_nodes =
+VCFB_select = 1
+VCFB_ncpus = 5
+VCFB_threads = 10
+VCFB_depend = afterok
+#Genotyping (this task is ran per-group)
+genot_nodes =
+genot_select = 1
+genot_ncpus = 1
+genot_threads =
+genot_depend = afterok
+#variant filtering (this task is ran per-group)
+varfilt_nodes =
+varfilt_ncpus = 1
+varfilt_select = 1
+varfilt_threads =
+varfilt_depend = afterok
+#phasing (this task is ran per-group)
+phasing_nodes =
+phasing_select = 1
+phasing_ncpus = 1
+phasing_threads =
+phasing_depend = afterok
+#output generation (this task is ran per-analysis)
+finalout_nodes =
+finalout_select = 1
+finalout_ncpus = 1
+finalout_threads =
+finalout_depend = afterok
+#Fast final out
+fastfout_nodes =
+fastfout_select = 1
+fastfout_ncpus = 1
+fastfout_threads =
+fastfout_depend = afterok
+#VCF import (VI)
+VI_nodes =
+VI_select = 1
+VI_ncpus = 1
+VI_threads =
+VI_depend = afterok
+#jobclean
+jobclean_nodes =
+jobclean_select = 1
+jobclean_ncpus = 1
+jobclean_threads = 1
+jobclean_depend = afterok
+#stats (this task is ran per-sample)
+stats_nodes =
+stats_select = 1
+stats_ncpus = 2
+stats_threads =
+stats_depend = afterok
+#analysis stats (this task is ran per-analysis)
+anstats_nodes =
+anstats_select = 1
+anstats_ncpus = 2
+anstats_threads =
+anstats_depend = afterok
+#Variant Calling with FreeBayes
+VCFB_nodes =
+VCFB_select = 1
+VCFB_ncpus = 2
+VCFB_threads =
+VCFB_depend = afterok
+#Variant Calling with Samtools
+VCSAM_nodes =
+VCSAM_select = 1
+VCSAM_ncpus = 2
+VCSAM_threads =
+VCSAM_depend = afterok
+#CNV detection pipeline
+cnv_nodes =
+cnv_select = 1
+cnv_ncpus = 2
+cnv_threads =
+cnv_depend = afterok
+#XHMM DOC
+XDOC_nodes =
+XDOC_select = 1
+XDOC_ncpus = 2
+XDOC_threads =
+XDOC_depend = afterok
+#CNV output
+cnvo_nodes =
+cnvo_select = 1
+cnvo_ncpus = 1
+cnvo_threads =
+cnvo_depend = afterok
+
+
+
+#Java maximum memory for GATK Programs
+javamem_SNCR = Xmx25g
+javamem_RTC = Xmx4g
+javamem_IR = Xmx4g
+javamem_BR = Xmx8g
+javamem_PR = Xmx4g
+javamem_MD = Xmx4g
+javamem_MSF = Xmx4g
+javamem_HAPC = Xmx64g
+javamem_CV = Xmx100g
+javamem_GGVCF = Xmx25g
+javamem_VR = Xmx64g
+javamem_VF = Xmx64g
+javamem_PBT = Xmx8g
+javamem_DOC = Xmx64g
+javamem_SV = Xmx8g
+javamem_CV = Xmx8g
+javamem_VA = Xmx8g
+javamem_CGP = Xmx8g
+javamem_SS = Xmx4g
+javamem_BBI = Xmx4g
+javamem_AR = Xmx4g
+
+##PROGRAMS VARIABLES TO NOT CHANGE
+
+#Fastq flowcell and lane position
+fq_instrument_pos = 0
+fq_flowcell_pos = 2
+fq_lane_pos = 3
+
+#Kinship type is identical in db_schema.sql
+kinship_types = P,F,M,A,R,-
+#Annovar parameters
+annotation_prog = annovar
+#Annovar EXT databases
+annov_ext_canonsplsites = hg19_canonSplSites.bed
+#convert2annovar
+#Set this if you want to include all variants (Annovar ver.X)
+ann_include_all_var = -format vcf4 -allsample -withfreq
+#To add info encoded in the INFO field
+ann_includeinfo = YES
+#Annovar annotation Table_annovar
+ann_build_ver = hg19
+ann_db_source = annovar
+#Type of Annotation (gb:gene based; fb: filter based, rb:region based)
+#IMPORTANT: If this annotation changes you must verify what are the new fields in the annotation
+#and change the fields in annotation_fields accordingly (check also the profiles)
+annov_ann_types = g,f,r
+annov_g_keyword = geneanno
+annov_f_keyword = filter
+annov_r_keyword = regionanno
+annov_1000g_popul = all,afr,amr,eas,eur,sas
+annov_csvout = NO
+annov_nastring = YES
+annov_remove = YES
+annov_vcf_input = NO
+#Use HGVS format
+annov_hgvs = YES
+#To add info to the output table
+ann_otherinfo = YES
+#This columns must be changed according to the
+#newer output from Annovar. Otherinfo is the name of the
+#last column. tot_info is the number of info it carries
+other_info_col = Otherinfo
+tot_info_annovar = 10
+#######Output from the Annovar output
+#Fields needed from the Otherinfo field 
+variant_fields_from_annovar = chrom,pos,id,ref,alt,qual,filter
+info_fields_from_annovar = DP,VC_ALGORITHM
+format_fields_from_annovar = gt,ad,dp,gq
+#Index where to start to take information from the OtherInfo field
+start_info_ann_wo_db = 3
+
+
+##PROGRAMS USED:
+#Quality check programs
+qc_prog = fastqc
+trim_prog = trimmomatic
+fastqc_report = fastqc_data.txt
+
+#Picard tools (jar files to be used with Picard path
+add_read_groups_prog = AddOrReplaceReadGroups
+mergesam_prog = MergeSamFiles
+mergebam_prog = MergeSamFiles
+#Program to remove duplicates from grouped files
+mrdup_groups_prog = MarkDuplicates
+mrdupbam_prog = MarkDuplicates
+#Program to remove duplicates from single files (samblaster|MarkDuplicates.jar) 
+#after the alignment
+mark_rem_dup_prog = MarkDuplicates
+#Program to create interval list file
+bedtointerval_prog = BedToIntervalList
+#Alignment utils program
+picard_sort_prog = SortSam
+picard_index_prog = BuildBamIndex
+picard_reorder_prog = ReorderSam
+picard_arg_prog = AddOrReplaceReadGroups
+picard_seqdict_prog = CreateSequenceDictionary
+picard_sortvcf_prog = SortVcf
+picard_gathervcfs_prog = GatherVcfs
+
+#Trimmomatic
+TR_adapters_f = /cineca/prod/applications/trimmomatic/0.33/binary/adapters/
+trimmomatic_prog = 
+
+#GATK programs
+gatk_tools_path = org.broadinstitute.gatk.tools
+realign_target_creator_prog = RealignerTargetCreator
+indel_realigner_prog = IndelRealigner
+base_recalibrator_prog = BaseRecalibrator
+print_reads_prog = PrintReads
+varcall_prog = HaplotypeCaller
+catvar_prog = CatVariants
+gendb_import_prog = GenomicsDBImport
+genot_prog = GenotypeGVCFs
+varfilt_prog = VariantFiltration
+selvar_prog = SelectVariants
+combvar_prog = CombineVariants
+phasing_prog = PhaseByTransmission
+varrecal_prog = VariantRecalibrator
+apprecal_prog = ApplyRecalibration
+depth_coverage_prog = DepthOfCoverage
+calc_gen_post_prog = CalculateGenotypePosteriors
+varann_prog = VariantAnnotator
+gatk_splitncig_prog = SplitNCigarReads
+gatk_gccontent_prog = GCContentByInterval
+
+#BWA-KIT programs
+seqtk_prog = seqtk
+seqtk_mergepe_prog = mergepe
+seqtk_seq_prog = seq
+alignment_prog = bwa
+samblaster_prog = samblaster
+k8_prog = k8
+map_alt_prog = bwa-postalt.js
+
+#SAMTOOLS programs
+samview_prog = view
+sort_prog = sort
+index_prog = index
+flagstat_prog = flagstat
+mpileup_prog = mpileup
+
+#BCFTOOLS programs
+bcftools_call_prog = call
+bcftools_filter_prog = filter
+
+#BEDTOOLS programs
+coverbed_prog = coverageBed
+mergebed_prog = mergeBed
+intersectbed_prog = intersectBed
+subtractbed_prog = subtractBed
+genomecov_prog = genomeCoverageBed
+sortbed_prog = sortBed
+
+#VCFTOOLS programs
+vcftools_isec_prog = vcf-isec
+vcftools_sort_prog = vcf-sort
+
+#Java parameters
+java_mem = Xmx24g
+
+#ANNOVAR programs
+conv2annov_prog = convert2annovar.pl
+annot_var_prog = annotate_variation.pl
+table_annov_prog = table_annovar.pl
+annovar_out_file = multianno.txt
+retrieveseq_prog = retrieve_seq_from_fasta.pl
+#It will add to the following the build version (hg19) in the code
+annovar_seqdir = seq
+
+#Prioritization
+prioritization_fold = prioritization
+R_suppl_out_script = convert_fout_to_level2_v0.4.R
+R_start_prioritization_script = start_prioritization.R
+R_prioritization_script = prioritization.1.13.R
+gene_full_table_rdata = UDP_gene_full_table.RData
+prepare_rdata = prepare_UDPpico_final_20190506.RData
+prior_avsnp_name = avsnp150
+prior_cand_var_f = OUT_candidate.vtb
+
+#Statistics scripts
+R_stats_script = var_stats.R
+R_coverage_stats_script = plots.R
+R_utils = r_utils.R
+R_log_file = R.log
+R_exome_depth_script = run_exome_depth.R
+
+#Log Files
+align_log = alignment.log
+align_err_log = alignment.err
+qc_log = qual_check.log
+qc_err_log = qual_check.err
+trim_log = trim.log
+trim_err_log = trim.err
+refine_log = refine.log
+MS_log = mergesam.log
+varcall_log = variant_call.log
+genot_log = genotyping.log
+varfilt_log = variant_filter.log
+phasing_log = phasing.log
+stats_log = stats.log
+anstats_log = anstats.log
+annotate_log = annotate.log
+finalout_log = finalout.log
+cnv_log = cnv.log
+
+##VarGenius folders
+data_folder = DATA
+lib_folder = LIB
+config_folder = CONFIGURATION
+log_folder = LOG
+repository_folder = REPOSITORY
+qc_out_f = qc_out
+trim_out_f = qc_out
+align_out_f = alignment_out
+refine_out_f = refine_out
+MS_out_f = mergesam_out
+varcall_out_f = varcall_out
+genot_out_f = genotyping_out
+varfilt_out_f = varfilt_out
+phasing_out_f = phasing_out
+stats_out_f = stats_out
+anstats_out_f = stats_out
+finalout_out_f = finalout_out
+fastfout_out_f = finalout_out
+
+#Folders for CNV detection
+cnv_out_f = cnv
+cnv_auto_f = auto
+cnv_sex_f = sex
+
+
+#EXTENSIONS
+align_sam_out = raw.sam
+align_sort_bam = sorted
+align_dup_removed = dup_removed.bam
+trim_out_suff = _val_
+trim_out_ext = .fq.gz
+#Output files suffixes
+txt_ext = txt
+fastq_ext = fq
+fastqc_html_ext = fastqc.html
+fastqc_zip_ext = fastqc.zip
+bam_ext = bam
+bai_ext = bai
+sam_ext = sam
+targ_int_ext = intervals
+bed_ext = bed
+recal_ext = grp
+gvcf_ext = g.vcf
+vcf_ext = vcf
+vcfi_ext = vcf.idx
+cov_hist_ext = cov_hist
+cov_d_ext = cov_d
+annov_in_ext = avinput
+flagstat_ext = flagstat
+miss_ann_ext = missann
+allvar_ext = allvar
+noncov_ext = noncov
+aggrcov_ext = aggrcov
+bedgraph_ext = bedg
+bamlist_ext = list
+geneinfo_f_ext = geneinfo
+ped_ext = ped
+Rstats_ext = Rstats
+igv_sess_ext = igv_session
+dict_ext = dict
+gene_annotation_ext = geneann
+mendel_viols_ext = mendel_viols
+gz_ext = gz
+zip_ext = zip
+rdata_ext = RData
+xlsx_ext = xlsx
+targz_ext = tar.gz
+idxgz_ext = idx.gz
+fai_ext = fai
+err_ext = err
+log_ext = log
+xml_ext = xml
+
+#configuration files
+ss_head_file = ss_head_file.txt
+ss_head_sep = ,
+ss_separator = \t
+variables = variables.txt
+parameters_sep = ,
+#(Please pay attention changin this parameter: ; is a Linux key)
+param_groups_sep = _
+qsub_name_len = 15
+#Configuration profiles files
+perchrom_profile = perchrom.profile
+persample_profile = persample.profile
+targeted_profile = targeted.profile
+dummy_profile = dummy.profile
+rna_profile = rna.profile
+wgs_profile = wgs.profile
+#Configuration files for reasearch group suffix
+profile_file_suff = user.profile
+
+
+#OUTPUT
+#List of files to be used in the HTML output
+outlist_file = outlist.txt
+outlist_desc_pos = 3
+outlist_path_pos = 4
+#Filename for statistics
+outstats_file = outstats.txt
+#filename for stats tables paths
+statstables_file = statstables.txt
+#DOC_outputs must be identical to the outlist_cov_ elements below!!
+#N.B. Titles are input to R script, hence words must be separated with '_'!!
+DOC_outputs = sample_gene_summary,sample_interval_summary,sample_summary
+DOC_sam_sum = sample_summary
+DOC_sam_interval_sum = sample_interval_summary
+DOC_sam_gene_sum = sample_gene_summary
+DOC_sam_cum_prop = sample_cumulative_coverage_proportions
+DOC_sam_cum_prop_plot_title = Global_samples_percentage_of_locus_covered_at 
+DOC_sam_cum_counts = sample_cumulative_coverage_counts
+DOC_sam_cum_prop_counts_title = Global_samples_number_of_locus_covered_at 
+DOC_sam_cum_cov_prop_fields = gte_1,gte_4,gte_10,gte_20,gte_40,gte_60,gte_80,gte_100
+#P:proband,A:affected non-proband; M:mother, F:father, R:any relative inserted for any reason
+samples_order = P,A,M,F,R
+#OUTPUT REARRANGEMENT
+#Transformation of the characters from the scores into a unique set of characters
+#P:pathogenic; LP: likely pathogenic; B: Benign; LB: Likely benign; U: unknown
+pred_to_transform = polyphen2_hdiv_pred,polyphen2_hvar_pred,mutationtaster_pred,mutationassessor_pred,lrt_pred,provean_pred,fathmm_pred,sift_pred,fathmm_mkl_coding_pred,metasvm_pred,metalr_pred
+polyphen2_hdiv_pred_old = D,P,B,U
+polyphen2_hdiv_pred_new = P,LP,B,U
+polyphen2_hvar_pred_old = D,P,B,U
+polyphen2_hvar_pred_new = P,LP,B,U
+mutationtaster_pred_old = N,P,D,A
+mutationtaster_pred_new = LB,B,LP,P
+mutationassessor_pred_old = L,N,H,M
+mutationassessor_pred_new = LB,B,LP,P
+lrt_pred_old = D,N,U
+lrt_pred_new = P,B,U
+provean_pred_old = D,N
+provean_pred_new = P,B
+fathmm_pred_old = D,T
+fathmm_pred_new = P,B
+sift_pred_old = D,T
+sift_pred_new = P,B
+fathmm_mkl_coding_pred_old = D,N
+fathmm_mkl_coding_pred_new = P,B
+metasvm_pred_old = D,T
+metasvm_pred_new = P,B
+metalr_pred_old = D,T
+metalr_pred_new = P,B
+##HGMD rearrangement
+hgmd_cols_to_keep = CLASS,GENE,MUT,PHEN,PMID
+hgmd_cols_to_group = STRAND,DNA,DB
+hgmd_start_col = hgmdindelcall
+hgmd_group_col = hgmd_info
+##Rearrange RefSeq info with Splicing distance calculation
+#Describes the splicing variant into the func column
+splicing_cols = splicing,ncRNA_splicing
+func_col = func
+gene_col = gene
+##**
+func_cols = func_refgene,func_wgencodegencodebasicv19
+#Describes the exonic function (use just "exonic")
+exonic_cols = exonic
+num_refseq_fields = 8
+#Variant frequencies fields to be imported into the DB
+freq_fields_4_db = exac_all,gnomad_exome_all
+
+##Exac rearrangment
+#start_col is where the frequencies of different nationalities starts
+#nat_cols is the number of columns of different nationalities after the start
+#empy_val is the value to put when the frequency is not present
+exac_all_col = exac_all
+exac_start_col = exac_afr
+exac_nat_cols = 6
+exac_empty_val = -1
+##1000Genomes rearragement. variables are same as in ExAC rearrangmenet
+1000g_cols = db1000g2015aug_all,db1000g2015aug_afr,db1000g2015aug_amr,db1000g2015aug_eas,db1000g2015aug_eur,db1000g2015aug_sas
+1000g_all_col = db1000g2015aug_all
+1000g_start_col = db1000g2015aug_afr
+1000g_nat_cols = 4
+1000g_empty_val = -1
+#gnomad exome rearrangement
+#variables are same as in ExAC rearrangmenet
+gnomad_ex_all_col = gnomad_exome_all
+gnomad_ex_start_col = gnomad_exome_afr
+gnomad_ex_nat_cols = 7
+gnomad_ex_empty_val = -1
+#gnomad genome rearrangement
+#variables are same as in ExAC rearrangmenet
+gnomad_gen_all_col = gnomad_genome_all
+gnomad_gen_start_col = gnomad_genome_afr
+gnomad_gen_nat_cols = 6
+gnomad_gen_empty_val = -1
+
+#Descriptions of objects in the outlist file
+#The following are keywords, hence you cannot use them arbitrarily in the descriptions
+#[STORE] means that this kind of file will be compressed into a folder and stored
+#[WEB] means that this file can be shown in the output web pages
+#[IGV] means that this file must be included in the IGV XML file
+outlist_qc_desc = Quality Check Raw Fastq [STORE]
+outlist_qctrim_desc = Quality Check Trimmed Fastq [STORE]
+outlist_FS_alignsort_desc = FlagStat Alignment Statistics BAM file aligned and sorted [STORE]
+outlist_FS_remdup_desc = FlagStat Alignment Statistics BAM file aligned and sorted and without duplicates [STORE]
+outlist_FS_intertarg_desc = FlagStat Alignment Statistics BAM file intersected with the target [STORE]
+outlist_sortedbam_desc = Aligned and Sorted BAM file
+outlist_recalibratedbam_desc = Recalibrated BAM file [IGV] [SAVE]
+outlist_recalbamindex_desc = Recalibrated BAM index [SAVE]
+outlist_final_vcf = VCF variation report [WEB] [IGV]
+outlist_final_vcfindex = VCF variation index [WEB] [IGV]
+outlist_final_out = VarGenius final output [SAVE]
+outlist_final_xls = VarGenius final output XLS [WEB]
+outlist_final_noncov = Non-Covered genes/regions [STORE]
+outlist_final_2ndlev = VarGenius second level output [WEB]
+outlist_final_geneann = Gene Annotation [STORE]
+outlist_final_mendviol = Mendelian Violations [STORE]
+outlist_cov_sample_gene_summary = Sample Coverage per Gene [WEB]
+outlist_cov_sample_interval_summary = Sample Coverage per Interval [STORE]
+outlist_cov_sample_summary = Sample Coverage Summary [STORE]
+outlist_cov_COVLT99 = Disease Genes with Coverage<99 [STORE]
+outlist_prioritization_fold = Prioritization folder [STORE]
+outlist_rearranged_output = Re-arranged output 
+outlist_igvsession_xml = IGV Session file [WEB]
+outlist_storage_compressed = Stored Output [WEB]
+outlist_cov_page = COVERAGE
+outlist_qc_page = QC
+outlist_output_page = OUT
+outlist_html_pages = index,qc,cov
+outlist_html_imgf = HTML Folder with images [SAVE]
+outlist_html_cov = HTML Page for coverage statistiscs [SAVE]
+outlist_html_qc = HTML Page for quality check [SAVE]
+outlist_html_index = HTML Page for main output [SAVE]
+
+#HTML PAGE
+html_index_page = index.html
+html_index_desc = Exome Sequencing Analysis Report
+html_qc_page = qc.html
+html_qc_desc = Quality Check Report
+html_cov_page = coverage.html
+html_cov_desc = Coverage Report
+html_cov_img_suff = COV_IMG
+html_cov_tab_suff = COV_TAB
+
+#VCF fields and others
+db_vcf_chr_str = chrom
+vcf_chr_ind = 0
+db_vcf_pos_str = pos
+vcf_pos_ind = 1
+db_vcf_id_str = id
+vcf_id_ind = 2
+db_vcf_ref_str = ref
+vcf_ref_ind = 3
+db_vcf_alt_str = alt
+vcf_alt_ind = 4
+db_vcf_qual_str = qual
+vcf_qual_ind = 5
+db_vcf_filter_str = filter
+vcf_filter_ind = 6
+db_vcf_info_str = info
+vcf_info_ind = 7
+vcf_genot_ind = 8
+vcf_prob_gen_ind =  9
+db_vcf_comp_id_str = compid
+vcf_info_sep = ;
+vcf_gen_sep = :
+
+#CoverageBed output columns -d
+cov_chrom_col = 0
+cov_start_col = 1
+cov_end_col = 2
+cov_code_col = 5
+cov_base_num_col = 6
+cov_read_l_col = 7
+
+#CoverageBed output columns -hist
+cov_genename_col = 3
+cov_depth_col = 4
+cov_depthbases_col = 5
+cov_size_col = 6
+cov_perc_col = 7
+
+#genes2Refseq columns
+g2ref_tax_col = 0
+g2ref_entrez_col = 1
+g2ref_refseq_col = 3
+g2ref_gensymb_col = 15
+
+#HPO to genes
+hpo2gen_gene_col = 1
+hpo2gen_hponame_col = 2
+hpo2gen_hpoid_col = 3
+
+#Column used for annotation of transcripts (e.g.refGene,wgEncodeGencodeBasicV19)
+genomic_ann_fields = refGene,wgEncodeGencodeBasicV19
+aa_change_gen_field = AAChange
+#RefSeq
+##**
+tr_ann_field = AAChange.refGene
+##*
+tr_ann_fields = gene_symbol,transcript,exon,nt_change,aa_change
+#Gencode
+annov_empty_val = .
+vargenius_empty_val = -
+
+#Variables used to filter the output
+#To get the distance of the splicing variant
+spl_func_cols = func_refgene
+spl_detail_col = genedetail_refgene
+#Columns where to get and print the splicing distance. May be [splicing, ncRNA_splicing].
+#Separate with ',' if multiple
+splicing_cols = splicing,ncRNA_splicing
+exonic_cols = exonic
+dist_from_exon_suff = _dist_from_exon
+
+#Variables used to write genotype information in the output
+ref_r_str = REF_reads
+alt_r_str = ALT_reads
+tot_r_str = tot_reads
+percalt_r_str = PercALT_reads
+gt_str = GT
+zyg_str = ZYG
+dp_str = DP
+gq_str = GQ
+#Positions of the previous information in the string generated in generate_Vcf
+ref_r_pos = 2
+alt_r_pos = 3
+tot_r_pos = 4
+percalt_r_pos = 5
+gt_pos = 0
+zyg_pos = 1
+dp_pos = 6
+gq_pos = 7
+
+
+#CoverageBed parameters (hist for histogram and 'd' for coverage base per base)
+covbed_mode = d
+
+###Parameters for the final output modification
+#PL minimum value to infer a Genotype when there are multiallelic sites
+pl_thr = 0
+
+####Parameters for downstream analyses
+#Non covered regions
+region_dim = 20
+#Column of coverage in bedgraph file
+noncov_cover_col = 4
+#Output file with non covered target regions
+noncov_targ_chr_col = 0
+noncov_targ_start_col = 1
+noncov_targ_end_col = 2
+noncov_targ_name_col = 9
+noncov_min_cov_col = 3
+noncov_max_cov_col = 4
+noncov_avg_cov_col = 5
+noncov_overlap_col =
+#Flagstat rows with interesting statistics
+flagstat_totreads_row = 0
+flagstat_propaired_row = 8
+flagstat_readsremoved_row = 3
+flagstat_readsmapped_row = 4
+flagstat_totreads_field = TotReads
+flagstat_readsmapped_field = TotMapped
+flagstat_readsremoved_field = ReadsRemoved
+flagstat_propaired_field = ProperlyPaired
+
+#DepthOfCoverage parameters 
+#GeneList file permits the computation of coverage with genes.
+#Please put the path of the file from the main data folder
+DOC_genelist = geneTrack1xy_sort.txt
+#Target file interval list
+target_inter_list_ext = interval_list
+DOC_coverage_thresholds = 10,20,40,80
+
+#Output export from the database
+variants_fields = chrom,pos,ref,alt
+statistics_fields = filter,qual,mq
+#Here the refgene_symbol is used to refer to data in the 'genes' table
+#DO NOT CHANGE ITS POSITION!! IT MUST BE THE FIRST!!
+#CHANGE HERE IF YOU CHANGE one among annov_X_dbs!!!
+#For the transcripts information I have to put here the additional fields that we add both for RefSeq and Gencode
+#When you use a BED file you must add here the name 'bed', if you add more than one put: bed,bed2,bed3...
+annotations_fields = gene_refgene,func_refgene,genedetail_refgene,exonicfunc_refgene,aachange_refgene,gene_wgencodegencodebasicv19,func_wgencodegencodebasicv19,genedetail_wgencodegencodebasicv19,exonicfunc_wgencodegencodebasicv19,aachange_wgencodegencodebasicv19,dpsi_max_tissue,dpsi_zscore,exac_all,exac_afr,exac_amr,exac_eas,exac_fin,exac_nfe,exac_oth,exac_sas,gnomad_exome_all,gnomad_exome_afr,gnomad_exome_amr,gnomad_exome_asj,gnomad_exome_eas,gnomad_exome_fin,gnomad_exome_nfe,gnomad_exome_oth,gnomad_exome_sas,gnomad_genome_all,gnomad_genome_afr,gnomad_genome_amr,gnomad_genome_asj,gnomad_genome_eas,gnomad_genome_fin,gnomad_genome_nfe,gnomad_genome_oth,esp6500siv2_all,db1000g2015aug_all,db1000g2015aug_afr,db1000g2015aug_amr,db1000g2015aug_eas,db1000g2015aug_eur,db1000g2015aug_sas,gnomad_sum_allele_count,gnomad_sum_tot_hom,gnomad_sum_male_hom,clinsig,clndbn,clnacc,clndsdb,clndsdbid,sift_pred,polyphen2_hdiv_pred,polyphen2_hvar_pred,lrt_pred,mutationtaster_pred,mutationassessor_pred,fathmm_pred,provean_pred,vest3_score,cadd13_rawscore,cadd13_phred,dann,interpro_domain,fathmm_mkl_coding_pred,metasvm_pred,metalr_pred,integrated_confidence_value,gerp__elem,phylop100way_vertebrate,phylop20way_mammalian,phastcons100way_vertebrate,phastcons20way_mammalian,siphy_29way_logodds,avsnp150,eigen,cpgislandext,rmsk,simplerepeat,genomicsuperdups,dgvmerged,cytoband,bed
+#Position of gene_refgene in the list (starting from 0)
+rg_symbol_index = 0
+#Number of fields associated with the gene symbol
+rg_symbol_fields = 5
+#Null values for refgene_symbol
+rg_null_values = UNKNOWN,unknown
+#Last 1000 genomes field. Will be used to insert the internal frequency info
+last_1000g_field = db1000g2015aug_sas
+#Some databases versions
+dbSNPversion = avsnp150
+cadd_phred_version = cadd13_phred
+
+#Separator for multiple annotations
+mult_ann_sep = ]---[
+#Annotation fields to be imported into the database
+fields_to_import = gene_refgene,func_refgene,refgene_transcript,refgene_exon,refgene_nt_change,refgene_aa_change,gene_gencode,func_gencode,gencode_transcript,gencode_exon,gencode_nt_change,gencode_aa_change
+#Gene annotation needed (PLEASE SET ALSO THE INDEX FOR HPO AND REFSEQ!!
+gene_annotation_fields = db_hpo_ids,db_gdi_score,db_rvis_score,db_rvis_perc,db_refseq_ids,db_entrez_id,db_omim_ids
+#Columns number for fields in the list (starting from 1)
+hpoids_ind = 1
+gdi_score_ind = 2
+rvis_score_ind = 3
+rvis_perc_ind = 4
+refseq_ids_ind = 5
+entrez_id_ind = 6
+omim_id_ind = 7
+#Genotype fields associated to each sample for a variant (CANNOT BE CHANGED BY USER)
+genotype_fields = gt,ad,dp,gq
+FB_genotype_fields = gt,ro,dp,gq
+#INFO fields needed into the annotation. VC_ALGORITHM is uniq in VarGenius to use multiple 
+#variant callers
+info_fields_needed = DP,VC_ALGORITHM
+#Columns number for fields in the list (starting from 2 because the first is varids)
+gt_ind = 2
+ad_ind = 3
+dp_ind = 4
+gq_ind = 5
+#Parameters required to filter the annotation based on ExAC frequency
+#exacall_min_freq Threshold used for UDP: 0.01
+exacall_fld = exac_all
+exacall_min_freq = 100000
+#Gene annotation
+gene_field = gene_refgene
+nucl_change = refgene_nucl_change
+aa_change = refgene_aa_change
+
+#Internal Variants Frequency field
+intern_var_freq_fld = IVF
+var_frequency_factors_fld = freq_factors
+
+#STEPS ARRAYS
+#These strings are the steps that can be executed in a given pipeline
+#and they are identical to the strings used in the database. So, changing something here
+#means you have to change also the 'steps' below and the db_schema.sql
+#PIPELINE 1
+#This is the basic pipeline from GATK for exome and targeted 
+#is called per-sample
+pipe1_st1 = trim,align,sortidx,mrdup,realtar,indreal,baserecal
+pipe1_st2 = baserecal,precalread,mergegrp,mrdupgrp,varcall,catvar
+pipe1_st3 = genot,varfilt,varrecal,apprecal,genotref,phasing,finalout
+pipe1_stats = mergebam,sortidx
+#PIPELINE 2
+#This is the basic pipeline from GATK for RNAseq
+pipe2_st1 = trim,align,sortidx,mrdup,splnc,realtar,indreal,baserecal
+pipe2_st2 = baserecal,precalread,mergegrp,mrdupgrp,varcall,catvar
+pipe2_st3 = genot,varfilt,varrecal,apprecal,genotref,phasing,finalout
+pipe2_stats = mergebam,sortidx
+
+#Status of the analyses
+#queued: the analysis is launched but not running;
+#qc: at least one of the sample completed the quality check and trimming
+#alnref: at least one of the sample completed the alignment and refinement
+#anstats: all the statistics steps are completed
+#varcall: all the samples have completed the variant calling step
+#fout: the output creation has been completed
+analysis_queued = 0
+analysis_qc = 1
+analysis_alnref = 2
+analysis_anstats = 
+analysis_varcall = 4
+analysis_fout = 5
+
+
+
+
+
+##UNTOUCHABLE SOFTWARE PARAMETERS
+#STAR
+STAR_genome_f = STAR_genome
+STAR_alignout = Aligned.out.sam
+STAR_sjout = SJ.out.tab
+
+
+#TrimGalore
+trimg_qual_enc = phred33
+
+#Trimmomatic
+TRM_ILLUMINACLIP =
+TRM_SLIDINGWINDOW = 3:1
+TRM_MINLEN =
+
+#BWA
+vcf_rg_id = ID
+vcf_rg_lb = LB
+vcf_rg_sm = SM
+vcf_rg_pu = PU
+vcf_rg_pl = PL
+vcf_rg_pl_val = ILLUMINA
+
+#SAMBLASTER parameters (use removeDups or leave empty)
+sambl_rem_dups = removeDups
+
+#bwa-postalt parameters (do not change)
+postalt_prefix = hla
+
+#CatVariants parameters
+assumeSorted = YES
+
+#CombineVariants parameters
+cv_genotypeMergeOptions = UNSORTED
+
+#PhaseByTransmission parameters
+ped = 
+FatherAlleleFirst = YES
+MendelianViolationsFile = mendel_viols
+pedigreeValidationType = SILENT
+
+##Annovar DATABASES
+#NB:avsnp database is used also during the prioritization. If you change it here
+#please change also prior_avsnp_name
+annov_g_dbs = refGene,ensGene,wgEncodeGencodeBasicV19
+annov_f_dbs = exac03,gnomad_exome,gnomad_genome,esp6500siv2_all,esp6500siv2_aa,esp6500siv2_ea,1000g2015aug,clinvar_20170905,dbnsfp33a,dbnsfp31a_interpro,avsnp150,dann,eigen,spidex_EXT,cadd13,gerp++elem,gnomadcounts_EXT
+annov_r_dbs = cytoBand,phastConsElements46way,genomicSuperDups,cpgIslandExt,rmsk,simpleRepeat,dgvMerged,canonSplSites_BED
+
+#Annovar additional databases included in VarGenius Repository
+annov_included = canonSplSites
+
+#Annotation to be included into the database
+annov_g_2db = refGene,wgEncodeGencodeBasicV19
+annov_f_2db = exac03,gnomad_exome,dbnsfp33a
+annov_r_2db = cytoBand
+
+#Plots names
+DISEASECOVBOXPLOT_name = DISEASECOVBOXPLOT
+COVLT99_name = COVLT99
+HQVARPLOT_name = HQVARPLOT
+ALLSAMPLESCOVPLOT_name = ALLSAMPLESCOVPLOT
+ALLSAMPLESREADSPLOT_name = ALLSAMPLESREADSPLOT
+
+#Table names
+ALIGNMENTSTATS_name = ALIGNMENTSTATS
+ALNSTATSCOMP_table = Alignment Stats Comparison
+VARSTATSCOMP_table = Variants Stats Comparison
+
+
+#XHMM needed parameters
+xhmm_gc_content_locus_f = DATA.locus_GC.txt
+xhmm_extreme_gc_f = extreme_gc_targets.txt
+
+#XHMM functions parameters
+#DepthOfCoverage for XHMM
+xhmm_DOC_params = -dt BY_SAMPLE -dcov 5000 -l INFO --omitDepthOutputAtEachBase --omitLocusTable --minBaseQuality 0 --minMappingQuality 20 --start 1 --stop 5000 --nBins 200 --includeRefNSites --countType COUNT_FRAGMENTS
+#Steps of XHMM pipeline are indicate with number
+#STEP1: Filter and prepare for normalization
+xhmm_params_step1 = --centerData --centerType target --minTargetSize 10 --maxTargetSize 10000 --minMeanTargetRD 10 --maxMeanTargetRD 500 --minMeanSampleRD 25 --maxMeanSampleRD 200 --maxSdSampleRD 150
+#Run PCA
+xhmm_params_step2 = 
+#Normalize mean centerd data
+xhmm_params_step3 = --PCnormalizeMethod PVE_mean --PVE_mean_factor 0.7
+#Filter and calculate z-score
+xhmm_params_step4 = --centerData --centerType sample --zScoreData --maxSdTargetRD 30
+#Filter original read-depth data
+xhmm_params_step5 =
+#Call CNv
+xhmm_params_step6 =
+#Genotype
+xhmm_params_step7 =
+
+#XHMM output names
+xhmm_out = DATA
+xhmm_merge_out = DATA.RD
+xhmm_pca_out = DATA.RD_PCA
+xhmm_RD_filtered_targets = DATA.filtered_centered.RD.filtered_targets
+xhmm_RD_filtered_samples = DATA.filtered_centered.RD.filtered_samples
+xhmm_filtered_centered_RD = DATA.filtered_centered.RD
+xhmm_PCA_normalized = DATA.PCA_normalized
+xhmm_filtered_sample_zscores_RD = DATA.PCA_normalized.filtered.sample_zscores.RD
+xhmm_zscores_RD_filtered_targets = DATA.PCA_normalized.filtered.sample_zscores.RD.filtered_targets
+xhmm_zscores_RD_filtered_samples = DATA.PCA_normalized.filtered.sample_zscores.RD.filtered_samples
+xhmm_same_filtered_RD = DATA.same_filtered.RD
+xhmm_xcnv_out = DATA.xcnv
+xhmm_xcnvaux_out = DATA.aux_xcnv
+xhmm_params_f = xhmm.params.txt
+xhmm_vcf_out = DATA.vcf
+xhmm_script = XHMM_script.sh
+#Useless output from DepthOfCoverage for XHMM
+xhmm_remove_DOC_outputs = sample_interval_statistic,sample_statistics,sample_summary
+
+#This is a black list of analysisnames for which the BAM file gives any kind of troubles
+#It will be added _sex.txt for sex chromosomes and _auto.txt for autosomes
+xhmm_bamblacklist_f = exome_depth_bam_blacklist
+
+#ExomeDepht output names
+ED_bamlist_f = exome_depth_bam_list.txt
+ED_cnvout_f = exome_depth_out_list.txt
+
+#This is a black list of analysisnames for which the BAM file gives any kind of troubles
+#It will be added _sex.txt for sex chromosomes and _auto.txt for autosomes
+ED_bamblacklist_f = exome_depth_bam_blacklist
+
+#database names and tables
+db_info_table = info
+db_info_row = inforow
+db_busy = dbbusy
+db_jobin = jobin
+db_dbversion = dbversion
+db_progver = progver
+db_ss_table = sample_sheets
+db_ss_name = ss_name
+db_readf_table = readfiles
+db_readf_id = readfid
+db_readf_name = readfname
+db_readf_fqdir = fqdir
+db_readf_fq1 = fq1
+db_readf_fq2 = fq2
+db_readf_instrument = instrument
+db_readf_flowcell = flowcell
+db_readf_lane = lane
+db_readf_goodquality = goodquality
+db_sample_table = samples
+db_sample_id = sampleid
+db_sample_name = samplename
+db_sample_kinship = kinship
+db_sample_gender = gender
+db_sample_bamfilesused = readfbamused
+db_analyses_table = analyses
+db_analysis_name = analysisname
+db_analysis_id = analysisid
+db_analysis_resgroupid = resgroupid
+db_analysis_userid = userid
+db_analysis_infreq = infreq
+db_analysis_date = analdate
+db_analysis_info = analinfo
+db_analysis_status = status
+db_analysis_stored = stored
+db_analysis_genotref = genotref
+db_analysis_cnv = cnvanalysis
+db_familyid = familyid
+db_sample_sheets_table = sample_sheets
+db_sample_sheet_name = ss_name
+db_sample_sheet_id = ssid
+db_multiple = multiple
+db_perchrom = perchrom
+db_convscores = convscores
+db_pedfile = pedfile
+db_targetbed = targetbed
+db_sequencingtype = seqtype
+db_dogenot = dogenot
+db_annovar_dbs_table = annovar_dbs
+db_annovar_dbs_name = ann_db_name
+db_annovar_dbs_type = ann_db_type
+db_annovar_dbs_ver = ann_db_ver
+db_variants_table = variants
+db_var_statistics_table = statistics
+db_qual = qual
+db_filter = filter
+db_genotype_sample_table = genotype_sample
+db_genotype_pl = PL
+db_genotype_gt = GT
+db_genotype_gq = GQ
+db_genotype_dp = DP
+db_var_ids = varids
+db_var_id = varid
+db_var_chrom = chrom
+db_var_pos = pos
+db_var_ident = id
+db_var_ref = ref
+db_var_alt = alt
+db_var_compid = compid
+db_var_freq_update_hist_table = var_freq_update_hist
+db_var_freq_update = varfrequpdate
+db_targeted_allele_freq = targeted_allele_freq
+db_targeted_freq_factors = targeted_freq_factors
+db_exome_allele_freq = exome_allele_freq
+db_exome_freq_factors = exome_freq_factors
+db_rna_allele_freq = rna_allele_freq
+db_rna_freq_factors = rna_freq_factors
+db_wgs_allele_freq = wgs_allele_freq
+db_wgs_freq_factors = wgs_freq_factors
+db_ann_id = annid
+db_var_annotations_table = annotations
+db_refgene_symbol = refgene_symbol
+db_phenotypes_table = phenotypes
+db_phenotype_id = phenid
+db_hpo_id = hpoid
+db_hpo_name = hponame
+db_hpo_def = hpodef
+db_genes_table = genes
+db_genes_name = genename
+db_genes_id = geneid
+db_hpo_ids = hpoids
+db_gdi_score = gdi
+db_rvis_score = rvisscore
+db_rvis_perc = rvisperc
+db_refseq_ids = refseqids
+db_entrez_id = entrezid
+db_omim_ids = omimids
+db_omim_genedesc = omimgenedesc
+db_omim_phenotype = omimphenotype
+db_transcripts_table = transcripts
+db_transcript_id = trid
+db_refseq_id = refseqid
+db_tr_genes_ids = geneids
+db_target_files_table = target_files
+db_targetname = targetname
+db_targetid = targetid
+db_target_perchrdiv = perchrdiv
+db_target_perchrdivdir = perchrdivdir
+db_target_bedtointerval = bedtointerval
+db_target_gccontentf = xhmmgccontentfile
+db_samples_info_table = samples_info
+db_samples_personid = personid
+db_sample_realname = name
+db_sample_surname = surname
+db_sample_dob = dob
+db_sample_pob =	pob
+db_sample_kinshipinfo = kinship_info
+db_sample_tissue = tissue
+db_sample_affected = affected
+db_sample_paternity = paternity
+db_sample_heritability = heritability
+db_sample_diseaseid = diseaseid
+db_sample_target_cov = target_cov
+db_sample_enrichment = enrichment
+db_sample_readindex = readindex
+db_sample_code = code
+db_sample_cgharray = cgharray
+db_sample_phenomeid = phenomeid
+db_sample_sequencer = sequencer
+db_sample_arrivaldate = arrivaldate
+db_sample_library_prep_date = library_prep_date
+db_sample_further_lib_prep_date = further_lib_prep_date
+db_sample_sequencing_date = sequencing_date
+db_sample_further_seq_dates = further_seq_dates
+db_sample_libraryprep = libraryprep
+db_sample_othersampleid = othersampleid
+db_sample_notes = notes
+db_samples_hpo_table = samples_hpo
+db_samples_hpo_observed = observed
+db_cand_vars_table = candidate_variants
+db_freqmax = freq_max
+db_cand_vars_id = candvarid
+db_cand_vars_causative = causative
+db_cand_vars_validated = validated
+db_cand_vars_avsnp = avsnp
+db_cand_vars_uncert_sam = uncertain_samples
+db_cand_vars_ivf = ivf
+db_cand_vars_frequency_factors_fld = freq_factors
+db_cand_vars_exac_ac_het = exac_ac_het
+db_cand_vars_exac_ac_hom = exac_ac_hom
+db_cand_vars_exac_ac_hemi = exac_ac_hemi
+db_refgene_aa_change = refgene_aa_change
+db_cand_vars_known_variant = known_variant
+db_cand_vars_genefunctionclass = genefunctionclass
+db_cand_vars_selection_criteria = selection_criteria
+db_cand_vars_model = model
+db_cand_vars_interpretation = interpretation
+db_cand_vars_exac_pli = exac_pli
+db_cand_vars_exac_prec = exac_prec
+db_cand_vars_inpanel = inpanel
+db_cand_vars_automatic_selection = automatic_selection
+db_cand_vars_manual_selection = manual_selection
+db_cand_vars_ai_selection = ai_selection
+db_cand_vars_manual_revision = manual_revision
+db_cand_vars_notes = notes
+db_solved_table = solved
+db_genecoverage_table = genecoverage
+db_genecoverage = genecoverage
+db_readfiles_statistics = readfiles_statistics
+db_sample_statistics = sample_statistics
+db_analysis_statistics = analysis_statistics
+db_analstats_mendelviol = mendelviol
+db_analstats_totvariants = totvariants
+db_analstats_tr_tvratio = tr_tvratio
+db_analstats_denovoperc = denovoperc
+db_sampstats_duplicates = duplicates
+db_sampstats_totreads = totreads
+db_sampstats_mappedreads = mappedreads
+db_sampstats_avgcov = avgcov
+db_consensus = consensus
+db_targetextended = targetextended
+
+#TASKS
+align_task = align
+refine_task = refine
+varcall_task = varcall
+VCFB_task = VCFB
+VCSAM_task = VCSAM
+genot_task = genot
+varfilt_task = varfilt
+phasing_task = phasing
+finalout_task = finalout
+fastfout_task = fastfout
+
+#STEPS (Contained in the sample table)
+qc_step = qc
+trim_step = trim
+conv_score_step = convscore
+mergepe_step = mergepe
+align_step = align
+refine_step = refine
+mark_rem_dup_step = mrdup
+split_n_cigar_step = splnc
+map_alt_step = alt
+samview_step = samview
+samsort_step = samsort
+sort_idx_step = sortidx
+real_targ_step = realtar
+indel_real_step = indreal
+base_recal_step = baserecal
+print_reads_step = precalread
+mergesam_step = mergegrp
+mrdup_groups_step = mrdupgrp
+varcall_step = varcall
+catvar_step = catvar
+apprecal_step = apprecal
+varrecal_step = varrecal
+genot_step = genot
+varfilt_step = varfilt
+genotref_step = genotref
+phasing_step = phasing
+mergebam_step = mergebam
+mergealn_step = mergealn
+coverbed_step = coverbed
+flagstat_step = flagstat
+annotate_step = annotate
+stats_step = stats
+vcfimport_step = vcfimport
+import_missing_step = missimport
+update_freqs_step = updatefreqs
+finalout_step = finalout
+cnv_detect_step = cnv
+cnv_finalout_step = cnvo
+
+#TASKS NAME SHORT (Used only for the terminal command and as job names)
+qc_task_s = QC
+align_task_s = AL
+refine_task_s = REF
+indelreal_task_s = IR
+baserecal_task_s = BR
+merge_task_s = MS
+varcall_task_s = VC
+genotype_task_s = GEN
+stats_task_s = SST
+anstats_task_s = AST
+varfilt_task_s = VF
+phasing_task_s = PH
+fastout_task_s = FOUT
+vcfimport_task_s = VI

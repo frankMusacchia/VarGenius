@@ -1,0 +1,45 @@
+#GATK references
+known_mills = Mills_and_1000G_gold_standard.indels.hg19.vcf.gz
+known_db_snp = dbsnp_147_hg19.vcf.gz
+known_hapmap = hapmap_3.3.hg19.vcf
+known_1000g = 1000G_phase1.indels.hg19.vcf.gz
+known_omni = 1000G_omni2.5.hg19.vcf.gz
+#Needed sites for Variant Quality Score Recalibration
+known_sites_mills = Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.gz
+known_sites_db_snp = dbsnp_147_hg19.vcf.gz
+known_sites_hapmap = hapmap_3.3.hg19.sites.vcf.gz
+known_sites_1000g = 1000G_phase1.snps.high_confidence.hg19.sites.vcf.gz
+known_sites_omni = 1000G_phase1.indels.hg19.sites.vcf.gz
+known_sites_1000gP3 = 1000G_phase3_v4_20130502.sites.vcf.gz
+
+known_BR = known_mills,known_db_snp
+
+annotations_fields = gene_refgene,func_refgene,genedetail_refgene,exonicfunc_refgene,aachange_refgene,gene_wgencodegencodebasicv19,func_wgencodegencodebasicv19,genedetail_wgencodegencodebasicv19,exonicfunc_wgencodegencodebasicv19,aachange_wgencodegencodebasicv19,dpsi_max_tissue,dpsi_zscore,hgmdindelcall,hgmdinfo,exac_all,exac_afr,exac_amr,exac_eas,exac_fin,exac_nfe,exac_oth,exac_sas,gnomad_exome_all,gnomad_exome_afr,gnomad_exome_amr,gnomad_exome_asj,gnomad_exome_eas,gnomad_exome_fin,gnomad_exome_nfe,gnomad_exome_oth,gnomad_exome_sas,gnomad_genome_all,gnomad_genome_afr,gnomad_genome_amr,gnomad_genome_asj,gnomad_genome_eas,gnomad_genome_fin,gnomad_genome_nfe,gnomad_genome_oth,esp6500siv2_all,db1000g2015aug_all,db1000g2015aug_afr,db1000g2015aug_amr,db1000g2015aug_eas,db1000g2015aug_eur,db1000g2015aug_sas,clinsig,clndbn,clnacc,clndsdb,clndsdbid,sift_pred,polyphen2_hdiv_pred,polyphen2_hvar_pred,lrt_pred,mutationtaster_pred,mutationassessor_pred,fathmm_pred,provean_pred,vest3_score,cadd13_rawscore,cadd13_phred,dann,interpro_domain,fathmm_mkl_coding_pred,metasvm_pred,metalr_pred,integrated_confidence_value,gerp__elem,phylop100way_vertebrate,phylop20way_mammalian,phastcons100way_vertebrate,phastcons20way_mammalian,siphy_29way_logodds,avsnp150,eigen,cpgislandext,rmsk,simplerepeat,genomicsuperdups,dgvmerged,cytoband,bed#Scratch area
+
+#Reference Genome
+ref_genome_f = /pico/work/TELET_UDP/home/shared/references/genome/
+#Reference fasta (You can use only hg19)
+hum_gen_align = ucsc.hg19.fa
+
+#Gatk reference folder
+gatk_ref_f = /pico/work/TELET_UDP/home/shared/db/snp/
+
+#Target Bed Files
+target_reg_f = /pico/work/TELET_UDP/home/shared/references/exome
+
+#Scratch folder
+scratch_f = /pico/scratch/userexternal/fmusacch
+
+#Storage area
+storage_f = /gss/gss_work/DRES_TIGEM/home/vargenius_analyses/
+
+#Annovar folder of databases
+#NB: please use a folder name containing the version of Annovar (e.g. humandb_072017)
+annovar_db_f = /pico/work/TELET_UDP/home/shared/references/annovar_072017/humandb_072017
+
+html_host = http://UDProject:udpNGSd4t4@130.186.13.104/tigem
+
+#GATK version
+gatk_ver = 3
+
+

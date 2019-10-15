@@ -1,0 +1,29 @@
+####################################
+#OUTPUT MANAGEMENT
+create_vcf_to_ann = NO
+annov_db_dl = NO
+#rearrange_output can be used with the profiles together with the variable
+#output_new_cols = 1,..,N which shows the new columns order
+rearrange_output = NO
+get_coverage_plots = NO
+update_overall_samples_plots = NO
+gene_annotation = NO
+#Joint analysis separation (Use YES if you want an output for each sample)
+separate_analysis_from_joint = NO
+supplementary_output = NO
+do_users_modifies = NO
+
+#OUTPUT MANAGEMENT
+#Writing the output without the DB
+annot_all = NO
+write_output = NO
+generate_html = YES
+send_email = NO
+save_analysis = YES
+
+#IMPORT to DB
+vcfimport = NO
+update_frequencies = NO
+#Import missing annotations
+import_missing = NO
+import_coverage_data = NO

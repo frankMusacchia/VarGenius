@@ -1,0 +1,1 @@
+gender,kinship,dob,pob,affected,userid,resgroupid,fqdir,fq1,fq2,readfname,samplename,analysisname,reference,targetbed,seqtype,perchrom,convscores,infreq

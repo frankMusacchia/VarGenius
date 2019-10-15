@@ -1,0 +1,465 @@
+#This is the configuration file for the users of VarGenius
+#This is a text file with the names of the parameters used into the the program 
+#which allow to execute different purposes.
+#The format is: parameter = value . 
+#Comments starts with '#' symbol
+#If you want to add comments, you can do it but please do not use the symbol '=' or the expression will be 
+#evaluated.
+#If you will add a new parameter or remove one of them
+#the functionalities of VarGenius are compromised. Please contact the author of VarGenius
+#if you want to add specific functions.
+#The first part of this file contains a description. VarGenius will start to read the parameters after 
+#reading a long set of '#' symbols. Please do not use a long set of '#' symbols in your comments.
+#
+#The organization of the configuration file is the following:
+#Group 1 PIPELINE STEPS EXECUTION: represents the steps that will be executed for each task
+#										of the pipeline
+#Group 2 NEEDED TO RUN VARGENIUS: represent the variables you need to set 
+#       appropriately correspoding with your system configuration
+#Group 3 JOBS RESOUucsc.hg19.faRCES REQUESTS: represent the parameters to use with QSUB command
+#				for each different task of the pipeline. You need to set them accordingly with 
+#       the HPC you are using.
+#Group 4 SOFTWARE PARAMETERS: the parameters that you are allowed to change for the programs
+#				in use in VarGenius. 
+###################
+
+*************Group 1*******************
+##PIPELINE STEPS EXECUTION
+
+#QUALITY CHECK AND TRIMMING
+qc_exec = YES
+trimming = NO
+
+#ALIGNMENT
+align_prog_exec = YES
+mark_rem_dup_exec = YES
+
+#REFINEMENT
+base_recalibrator = YES
+
+#VARIANT CALLING
+varcall = YES
+#If you want to use freebayes, samtools and mix results
+#Indicate the type of merge: UNION, INTERSECT, ADDUNIQ (this last means GATK+Unique in all other approches)
+#or NO if you do not want to use multiple variant calling programs
+consensus_vc_approach = UNION
+#CNV calling
+cnv_run_exomedepth = YES
+cnv_run_xhmm = NO
+
+##GENOTYPING
+genot = YES
+
+##VARIANT FILTERING
+#Hard Filtering
+varfilt = YES
+#VariantQualityScore Recalibration
+varrecal = YES
+apprecal = YES
+genotref = YES
+
+#PHASING
+phasing = YES
+
+#STATISTICS
+noncovered_regions = YES
+#flagstats_steps
+flagstat_sorted = YES
+flagstat_mrdup = NO
+flagstat_baserecal = YES
+flagstat_inters_targ = YES
+#coverage per analysis (Using GATK DepthOfCoverage)
+coverage_analysis = YES
+
+#OUTPUT MANAGEMENT
+#Writing the output without the DB
+annot_all = YES
+write_output = YES
+generate_html = YES
+send_email = NO
+#Save the analysis in the storage folder
+save_analysis = YES
+
+#IMPORT VARIANTS AND ANNOTATIONS
+#Import new variants and genotypes and update frequencies
+vcfimport = YES
+update_frequencies = YES
+
+
+#Block database for exclusive use during the final output production
+#The VCF import is by default always exclusive (param: always_block_db_vcfi)
+block_db = NO
+
+#Make PED file
+get_ped_file = YES
+
+
+*************Group 2*******************
+###NEEDED TO RUN VARGENIUS
+##PROGRAM PATHS
+R_path = ---/bin/R
+java_path = ---/bin/java
+fastqc_path = ---/bin/fastqc
+trimmomatic_path = ---/trimmomatic-0.33.jar
+samtools_path = ---/bin/samtools
+bwa_path = ---/bin/bwa
+bedtools_path =---/gnu--4.8.3/bin/
+picard_path = ---/picard.jar
+gatk_path =  ---/gatk
+annovar_path = ---/bin/
+freebayes_path = ---/bin/freebayes
+bcftools_path = ---/bin/bcftools
+vcftools_path = ---/bin/
+#Alternative versions of R (when some package cannot be installed on the previous
+R_path2 = ---/bin/R
+xhmm_path = ---/xhmm
+
+#DATABASE configuration
+db_name = ---
+db_dsn = dbi:Pg:host=---;port=5432;sslmode=allow;
+db_host = ---
+db_user = ---
+db_pass = !---
+
+###JOBS RESOURCES REQUESTS
+#Qsub parameters that cannot be changed depending by the task:
+qsub_account = ---
+qsub_queue = parallel
+qsub_walltime = 5:00:00
+qsub_username = ---
+qsub_walltime_max = 24:00:00
+#Qsub parameters that can be changed depending by the task:
+qsub_mem = 120GB
+qsub_ncpus = 12
+
+#Data to send email
+email_author = VarGenius@---.it
+email_recipients = f.musacchia@---.it
+email_subject = PLEASE CITE VARGENIUS! Completed analysis
+email_message = IF YOU USE VarGenius RESULTS PLEASE CITE IT in YOUR PUBLICATIONS!! MANY THANKS FOR YOUR COLLABORATION: [Musacchia F, Ciolfi A, Mutarelli M, Bruselles A, Castello R, Pinelli M, Basu S, Banfi S, Casari G, Tartaglia M, Nigro V, TUDP. VarGenius executes cohort-level DNA-seq variant calling and annotation and allows to manage the resulting data through a PostgreSQL database.BMC Bioinformatics. 2018 Dec 12;19(1):477. doi: 10.1186/s12859-018-2532-4. (Please check results in exome.tigem.it. This message is automatically generated. Please do not use the reply button. For any question send an email to f.musacchia@tigem.it .
+
+#GATK version
+gatk_ver = 4
+
+*************Group 3*******************
+#OPTIONAL These parameters can be optionally changed but please read the ADVANCED_USAGE
+
+###JOBS RESOURCES REQUESTS
+#Qsub parameters changable depending by the task name
+#NB: WHEN CHANGING THE TASK NAME YOU MUST CHANGE ALSO HERE
+#For memory use always the measure unit (GB)
+#Quality Check (this task is ran per read file)
+qc_mem = 30GB
+qc_walltime = 10:00:00
+#Trimming (this task is ran per read file)
+trim_mem = 20GB
+trim_walltime = 10:00:00
+#Alignment (this task is ran per read file)
+align_mem = 20GB
+align_walltime = 10:00:00
+#Refinement (this task is ran per read file)
+refine_mem = 120GB
+refine_walltime = 12:00:00
+#Merge Samples (this task is ran per-sample)
+MS_mem = 80GB
+MS_walltime = 5:00:00
+#Variant calling (this task is ran per-sample)
+varcall_mem = 80GB
+varcall_walltime = 10:00:00
+#Genotyping (this task is ran per-group)
+genot_mem = 80GB
+genot_walltime = 1:00:00
+#variant filtering (this task is ran per-group)
+varfilt_mem = 50GB
+varfilt_walltime = 1:00:00
+#phasing (this task is ran per-group)
+phasing_mem = 50GB
+phasing_walltime = 1:00:00
+#output generation (this task is ran per-analysis)
+finalout_mem = 20GB
+finalout_walltime = 15:00:00
+#Fast final out
+fastfout_mem = 50GB
+fastfout_walltime = 24:00:00
+#VCF import
+VI_mem = 20GB
+VI_walltime = 15:00:00
+#jobclean
+jobclean_mem = 1GB
+jobclean_walltime = 100:00:00
+#stats (this task is ran per-sample)
+stats_mem = 100GB
+stats_walltime = 18:00:00
+#analysis stats (this task is ran per-analysis)
+anstats_mem = 80GB
+anstats_walltime = 18:00:00
+#Reannotation of the variants
+reannote_walltime = 30:00:00
+dldatasets_walltime = 24:00:00
+#Variant Calling with FreeBayes
+VCFB_mem = 80GB
+VCFB_walltime = 18:00:00
+#Variant Calling with Samtools
+VCSAM_mem = 80GB
+VCSAM_walltime = 18:00:00
+#CNV Calling 
+cnv_mem = 120GB
+cnv_walltime = 48:00:00
+#You cold also use a different queue for CNV discovery
+cnv_queue =
+#XHMM DepthOfCoverage jobs
+XDOC_mem = 30GB
+XDOC_walltime = 12:00:00
+#CNV Calling 
+cnvo_mem = 10GB
+cnvo_walltime = 10:00:00
+
+
+#FOLDERS 
+#page before
+#Scratch area
+scratch_f =
+
+#Storage area
+storage_f =
+
+##REFERENCES
+#Reference Genome Folder
+ref_genome_f =
+#Reference fasta (You can use only hg19)
+hum_gen_align = ucsc.hg19.fasta
+
+#Target Bed Files
+target_reg_f = 
+
+#GATK reference databases ftp://ftp.broadinstitute.org/bundle/hg19/
+#Set the folder and then write just their names
+gatk_ref_f =
+
+#Annovar folder of databases
+#NB: please use a folder name containing the version of Annovar (e.g. humandb_2018)
+annovar_db_f =
+
+#WEB SERVER
+#This is a link to the Web Server which displays the results
+#If you are not using a web server it will be your work folder (e.g. vargenius_analyses)
+html_host =
+
+#Disease gene lists for coverage statistics (they are in the DATA folder into working folder)
+disease_genes_lists_f = Epilessia,Lysoplex,TruSight_one,SkeletalDysplasia,CalmPlex,EyePlex,MotorPlex,NephroPlex,Obesity,RettPlex,ShortHeight,Retinopathy,RetinopathyCAND,ACMGActionable
+
+###Additional variants to call
+#Target extension. Since variants may be lost we enlarge the target file regions (def:200nt)
+target_extension = NO
+target_extens_dim = 100
+
+#Usage of different callers
+#In addition to gatk what should be run
+vc_algorithms = freebayes
+#Filters applied on the output when both the consensus and the target extension are used
+#if filter_vcf is used then the filters are applied. Both must be respected
+VCF_filter_vcf = NO
+VCF_minqual = 1500
+VCF_minfilter = PASS
+
+
+*************Group 4*******************
+###SOFTWARE PARAMETERS
+#STAR parameters
+STAR_sjdbOverhang = 70
+
+#TrimGalore
+trimg_min_qual = 20
+clip_R1 = 1
+clip_R2 = 1
+
+#Samtools parameters
+samsort_threads = 20
+samsort_mem = 5G
+
+#SplitNCigarReads parameters
+SNCR_read_filter =
+SNCR_reassign_mapping_quality_from =
+SNCR_reassign_mapping_quality_to =
+SNCR_unsafe =
+
+#DepthOfCoverage parameters
+filter_mismatching_base_and_quals_DOC = YES
+
+#RealignerTargetCreator
+#Known database (referred to known indel and snps in program_config)
+#You can separate more with 'word_sep'
+known_RTC = known_mills
+filter_mismatching_base_and_quals_RTC = YES
+fix_misencoded_quality_scores = NO
+allow_potentially_misencoded_quality_scores = NO
+nt_RTC = 10
+
+#IndelRealigner parameters
+#Known database (referred to known indel and snps in program_config)
+#You can separate more with 'word_sep'
+known_IR = known_mills
+filter_bases_not_stored = YES
+
+#BaseRecalibrator parameters
+filter_mismatching_base_and_quals_BR = YES
+#You can separate more with 'word_sep'
+known_BR = known_db_snp
+covariates_BR = ReadGroupCovariate,QualityScoreCovariate,CycleCovariate,ContextCovariate
+nct_BR = 10
+#Use a single BQSR file
+BQSR_uniq = YES
+
+#PrintReads parameters
+nct_PR = 8
+baq_PR = RECALCULATE
+
+#PICARD TOOLS PARAMETERS
+#AddOrReplaceReadGroups parameters
+#If you want to use the following here set YES
+picard_RGID = YES
+picard_RGLB = YES
+picard_RGPL = illumina
+picard_RGPU = YES
+picard_RGSM = YES
+picard_RGCN = TIGEM
+picard_SORT_ORDER = coordinate
+picard_USE_THREADING = true
+
+#MarkDuplicates Parameters
+#http://gatkforums.broadinstitute.org/gatk/discussion/2799
+#markduplicate is sufficient; HC will automatically apply filters to ignore dupes 
+picard_CREATE_INDEX =
+picard_VALIDATION_STRINGENCY = LENIENT
+picard_REMOVE_DUPLICATES = false
+picard_METRICS_FILE = duplicate.metrics
+picard_ASSUME_SORTED =
+picard_MAX_FILE_HANDLES_FOR_READ_ENDS_MAP =
+
+
+#HaplotypeCaller parameters (if you use null or none it will not be used )
+#GVCF mode is obtained with emitRefConfidence = GVCF
+#In GVCF mode the confidence thresholds are set to 0 automatically, so only the GenotypeGVCfs thresholds matter
+emitRefConfidence = GVCF
+variant_index_type =
+variant_index_parameter =
+#This parameter is not applied in GVCF mode
+HC_stand_call_conf = 50.0
+HC_min_base_quality_score = 
+HC_dontUseSoftClippedBases =
+#Default annotation: BaseQualityRankSumTest,ChromosomeCounts,Coverage,ExcessHet,FisherStrand,HaplotypeScore,InbreedingCoeff,MappingQualityRankSumTest,QualByDepth,RMSMappingQuality,ReadPosRankSumTest,StrandOddsRatio,DepthPerAlleleBySample
+hapc_annotation = Coverage,FisherStrand,BaseQualityRankSumTest,HaplotypeScore,InbreedingCoeff,MappingQualityRankSumTest,MappingQualityZero,QualByDepth,RMSMappingQuality,ReadPosRankSumTest,SpanningDeletions
+#Old value hapc_dbsnp :known_db_snp
+hapc_dbsnp =
+nct_HAPC = 8
+
+#GenotypeGVCFs parameters
+#When using a VCF from old version of GATK in GATK4, it should allow old MQ scores (DEPRECATED)
+ggvcf_allow_old_rms = NO
+ggvcf_annotation = Coverage,FisherStrand,BaseQualityRankSumTest,HaplotypeScore,InbreedingCoeff,MappingQualityRankSumTest,MappingQualityZero,QualByDepth,RMSMappingQuality,ReadPosRankSumTest
+ggvcf_dbsnp = known_db_snp
+#GenotypeGVCF is executed always for multiple samples and for a single sample if the user puts here YES 
+do_genotypeGVCF_4_single_sample = YES
+#For single sample we reduce the threshold for confidence call
+#(https://gatkforums.broadinstitute.org/gatk/discussion/7943/single-sample-vs-multiple-samples-haplotype-caller)
+ggvcf_single_sam_stand_call_conf =
+
+#VariantRecalibrator parameters
+#Minimum number of exomes to use the VQSR (as given in the GATK Best Practices)
+min_samples_4_joint = 30
+#Do not use Depth of coverage (DP), HaplotypeScore and InbreedingCoeff for exomes and targeted
+#(reason here:https://software.broadinstitute.org/gatk/guide/article?id=1259)
+vr_SNP_annotation = QD,MQRankSum,ReadPosRankSum,FS,MQ,SOR
+vr_INDEL_annotation = QD,MQRankSum,ReadPosRankSum,FS,SOR
+vr_stdThreshold = 10
+#Indicate here the number of resources for SNPs and INDELs
+vr_numres_SNP = 4
+vr_numres_INDEL = 2
+vr_resources_SNP1 = hapmap,known=false,training=true,truth=true,prior=15.0
+vr_resources_SNP1_file = known_sites_hapmap
+vr_resources_SNP2 = omni,known=false,training=true,truth=true,prior=12.0
+vr_resources_SNP2_file = known_sites_omni
+vr_resources_SNP3 = 1000G,known=false,training=true,truth=false,prior=10.0
+vr_resources_SNP3_file = known_sites_1000g
+vr_resources_SNP4 = dbsnp,known=true,training=false,truth=false,prior=2.0
+vr_resources_SNP4_file = known_sites_db_snp
+vr_resources_INDEL1 = mills,known=false,training=true,truth=true,prior=12.0
+vr_resources_INDEL1_file = known_sites_mills
+vr_resources_INDEL2 = dbsnp,known=true,training=false,truth=false,prior=2.0
+vr_resources_INDEL2_file = known_sites_db_snp
+#Clusters to generate for different types of variants (default in GATK:2)
+vr_max_gaussians_SNP = 2
+vr_max_gaussians_INDEL = 2
+
+#ApplyRecalibration parameters
+ar_ts_filter_level_SNP =  99.5
+ar_ts_filter_level_INDEL =  99.0
+
+#VariantFiltration parameters
+#INDEL "QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0"
+snp_filters = 1
+indel_filters = 4
+rna_filters = 5,6
+VF_clusterWindowSize = 10
+VF_clusterSize =
+filterName1 = "HARD_TO_VALIDATE"
+filterExpression1 = "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0"
+filterName2 = "VeryLowQual"
+filterExpression2 = "QUAL < 25.0"
+filterName3 = "LowQual"
+filterExpression3 = "QUAL > 25.0 && QUAL < 110.0"
+filterName4 = "HARD_TO_VALIDATE"
+filterExpression4 = "QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0"
+filterName5 = "RNA_FS"
+filterExpression5 = "FS > 30.0"
+filterName6 = "RNA_QD"
+filterExpression6 = "QD < 2.0"
+
+
+#Genotype Refinement Workflow parameters (GRW)
+#VariantFiltration
+GRW_genotype_filters = g1
+filterName_g1 = "lowGQ"
+filterExpression_g1 = "GQ < 20.0"
+#VariantAnnotator
+GRW_annotation = PossibleDeNovo
+GRW_CGP_supporting = known_sites_1000gP3
+
+#FreeBayes parameters
+FB_min_mapping_quality = 1
+FB_min_base_quality = 3
+#Filters for VCF suggested with freebayes
+FB_vcf_filters = 7,8
+filterName7 = "HARD_TO_VALIDATE"
+filterExpression7 = " QUAL < 110 || DP <= 30 "
+filterName8 = "LowQual"
+filterExpression8 = " QUAL < 25 || DP <= 10 "
+
+#Samtools parameters for variant calling
+#Filters for VCF suggested with samtools
+SAM_vcf_filters = 9
+filterName9 = "LowQual"
+filterExpression9 = " -g3 -G10 -e'%QUAL<10 || (RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || %MAX(DV)<=3 || %MAX(DV)/%MAX(DP)<=0.3'"
+
+#Annovar parameters
+#ME: If you want to know the distance (in bp) from the exon of those variants annotated as intronics
+#KW: use a large -splicing_threshold, such as 50 or 500 or more
+annov_splicing_threshold = 50
+
+#Non-covered regions parameters
+#Maximum number of reads covering a non-covered regions 
+noncov_threshold = 20
+#Overlap of non-covered seqs with target seqs during bedtools intersect
+noncov_recip_overlap = 0.95
+
+#Plots
+#Minimum gene coverage for a gene to be considered "covered"
+min_gene_coverage = 10
+
+#Parameters for operations ad-hoc for users
+#This parameters are  activated into the individual user config files
+panel_to_tag = 
+
+#CNV PARAMETERS
+cnv_max_bam_to_use = 10
+cnv_use_subject_only = NO

@@ -1,0 +1,17 @@
+#Profile for Nigro Lab External exomes and targeted (nigro_pico_ext)
+
+
+###########################
+#DepthOfCoverage parameters 
+DOC_coverage_thresholds = 10,20,40,80,100
+
+#Disposition of the columns in the output
+output_new_cols = 
+
+#This is a link to the working directory
+html_host = http://UDProject:udpNGSd4t4@130.186.13.104/tigem
+
+#EMAIL TO SEND WHEN ANALYSIS IS COMPLETED
+email_author = VarGenius@tigem.it
+email_recipients = francescomusacchia@gmail.com,annalaura.torella@gmail.com
+email_subject = VarGenius analysis is completed
