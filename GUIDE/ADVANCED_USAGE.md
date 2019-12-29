@@ -43,27 +43,70 @@ N.B. *VarGenius* will not work if you ask only for non-consecutive tasks (e.g. "
  3. If the analysis is of a TRIO (mother, father and a single proband) the phasing will be performed automatically. 
 
 
+
 ## HOW TO CREATE THE SAMPLE SHEET
 
 The sample sheet can be created manually or with the PERL script get\_sample\_sheet contained in the *VarGenius* folder that basically uses the sample folder to fill the sample sheet with all the needed information. 
 
 Here we see an example of command that you can use to obtain your first sample sheet. 
+*VarGenius* needs that you have all your fastq files into a folder and your sample sheets in another folder.
+Please create **/home/users/frank/fastq_files/**  and **/home/users/frank/ss_VarGenius** folders.
+
 Go into the work directory (vargenius_analyses) and test the command:
 
 ```
 perl /home/users/frank/VarGenius/get_sample_sheet.pl 
--dir /home/users/frank/samples/ 
+-dir /home/users/frank/fastq_files/ 
 -m targeted 
 -t target.bed 
 -uid 1 
 -rgid 1
--o /home/users/frank/vargenius_analyses/sample\_sheet\_test.tsv 
+-o /home/users/frank/ss_VarGenius/sample\_sheet\_test.tsv 
 ```
 
 After the sample sheet is created you need to read it using a Linux editor (like nano or VI) and verify that the data is correct.
 For more details about the sample sheet read the [OUTPUT](https://github.com/frankMusacchia/VarGenius/blob/master/GUIDE/OUTPUT.md) page.
 
 
+Once you have tested VarGenius with your first sample sheet you can start creating one with your own samples.
+Please use a common folder for all the fastq file you are going to produce. And within this folder you must have a folder for each sample
+containing any number of fastq per-sample.
+*VarGenius* needs that you use family names and a char to specify the kinship. For example if you have a trios with
+A123 (proband), A124 (mother) and A125 (father) you have to change sample names as follows:
+A123 -> A123_P
+A124 -> A123_M
+A125 -> A123_F
+In *VarGenius* the family name is the original name of the first considered proband.
+You should rename all the folders (keep fastq names as they are in order to not compromise clinicians nomenclature) accordingly.
+Once that you have these three folders-samples in your fastq_files folder you can create the input file for get_sample_sheet.pl.
+
+The input file is a text file containing: samplename, gender, birth date, place of birth and a flag (1 or 0) meaning that the sample is 
+affected or not. Thus, we will have the following text file.
+
+A123_P	F	01/01/2011	Naples	1
+A123_M	F	01/01/1990	Naples	0
+A123_F	M	01/01/1986	Naples	0
+
+
+If some information is missing use '-' symbol.
+
+```
+perl /home/users/frank/VarGenius/get_sample_sheet.pl 
+-dir /home/users/frank/fastq_files/ 
+-m targeted 
+-t target.bed 
+-uid 1 
+-rgid 1
+-fl input_info.txt
+-o /home/users/frank/ss_VarGenius/sample\_sheet\_1.tsv 
+```
+
+Once that the sample sheet is generated without errors go and check with an editor if it is well formed.
+Then you can use *VarGenius* to store samples info into the database and start an analysis.
+
+perl /home/users/frank/VarGenius/vargenius.pl -c user_config.txt -ss /home/users/frank/ss_VarGenius/sample\_sheet\_1.tsv -start -prof vargenius1.profile
+
+ 
 
 ## HOW TO SET Group3 OPTIONAL parameters
 
