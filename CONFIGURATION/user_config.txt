@@ -136,7 +136,7 @@ qsub_ncpus = 12
 email_author = VarGenius@---.it
 email_recipients = f.musacchia@---.it
 email_subject = PLEASE CITE VARGENIUS! Completed analysis
-email_message = IF YOU USE VarGenius RESULTS PLEASE CITE IT in YOUR PUBLICATIONS!! MANY THANKS FOR YOUR COLLABORATION: [Musacchia F, Ciolfi A, Mutarelli M, Bruselles A, Castello R, Pinelli M, Basu S, Banfi S, Casari G, Tartaglia M, Nigro V, TUDP. VarGenius executes cohort-level DNA-seq variant calling and annotation and allows to manage the resulting data through a PostgreSQL database.BMC Bioinformatics. 2018 Dec 12;19(1):477. doi: 10.1186/s12859-018-2532-4. (Please check results in exome.tigem.it. This message is automatically generated. Please do not use the reply button. For any question send an email to f.musacchia@tigem.it .
+email_message = IF YOU USE VarGenius RESULTS PLEASE CITE IT in YOUR PUBLICATIONS! [Musacchia F, Ciolfi A, Mutarelli M, Bruselles A, Castello R, Pinelli M, Basu S, Banfi S, Casari G, Tartaglia M, Nigro V, TUDP. VarGenius executes cohort-level DNA-seq variant calling and annotation and allows to manage the resulting data through a PostgreSQL database.BMC Bioinformatics. 2018 Dec 12;19(1):477. doi: 10.1186/s12859-018-2532-4. (Please check results in the web site. This message is automatically generated. Please do not use the reply button. For any question send an email to f.musacchia@tigem.it
 
 #GATK version
 gatk_ver = 4
