@@ -128,6 +128,14 @@ The general log is contained into the folder vargenius\_analyses/Sample1/data/. 
 The job logs are contained into the task folders in a specific log folder which contains a log file for each of the jobs executed per-readfile, per-sample or per-analysis. Job logs do not contain the date into the name so that it is not puzzling to understand what happens after several runs, while the general log contains the data so that one is able to keep in count different logs from different runs of the pipeline.
 Including the data into the log file is pertinent with the possibility to execute different tasks for the same analysis in different times.
 
+**Checking the output from VarGenius using logfiles and bash commands**
+
+VarGenius commands to verify that multiple parallel execution is well done
+
+The BaseRecalibration step has been complete: the log from ApplyBQSR prints the Runtime.totalMemory occurred in java for all the 24 chromosomes
+
+tail SG_PD_JOINT/refine_out/log/SG_PD_JOINT_PR_s17_*.err | grep 'Runtime.totalMemory()' | wc -l
+24
 
 
 
